@@ -1,0 +1,59 @@
+---
+#
+# Installing Kibana
+#
+# Add Elasticsearch apt key
+
+- name: Add Elasticsearch apt key
+  apt_key:
+   url: "https://packages.elastic.co/GPG-KEY-elasticsearch"
+   state: present
+
+# Add the Elasticsearch apt repo. For versions 7 of the stack - use '7.x-prerelease':
+
+- name: Adding Elasticsearch repo
+  apt_repository:
+   repo: deb https://artifacts.elastic.co/packages/7.x/apt stable main
+   state: present
+   filename: elastic-7.x.list
+   update_cache: yes
+
+# Install Kibana 
+
+- name: Install Kibana with apt
+  apt:
+   name: kibana
+   update_cache: yes
+ 
+# Configurations
+
+- name: Updating the config file to allow outside access
+  lineinfile:
+   destfile: /etc/kibana/kibana.yml
+   regexp: 'server.host:'
+   line: 'server.host: 172.21.37.21'
+   
+- name: Updating the config file server name
+  lineinfile:
+   destfile: /etc/kibana/kibana.yml
+   regexp: 'server.name:'
+   line: 'server.name: otprekba01'
+
+- name: Defining server port
+  lineinfile:
+   destfile: /etc/kibana/kibana.yml
+   regexp: 'server.port:'
+   line: 'server.port: 5601'
+    
+- name: Defining Elasticsearch URL
+  lineinfile:
+   destfile: /etc/kibana/kibana.yml
+   regexp: 'elasticsearch.url:'
+   line: 'elasticsearch.url: "http://172.21.37.20:9200"'
+   
+# Starting Kibana
+
+- name: Starting Kibana
+  service:
+   name: kibana
+   state: started
