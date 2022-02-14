@@ -31,25 +31,25 @@
   lineinfile:
    destfile: /etc/kibana/kibana.yml
    regexp: 'server.host:'
-   line: 'server.host: 172.21.37.21'
+   line: 'server.host: {IP_Address}'
    
 - name: Updating the config file server name
   lineinfile:
    destfile: /etc/kibana/kibana.yml
    regexp: 'server.name:'
-   line: 'server.name: otprekba01'
+   line: 'server.name: {server_name}'
 
 - name: Defining server port
   lineinfile:
    destfile: /etc/kibana/kibana.yml
    regexp: 'server.port:'
-   line: 'server.port: 5601'
+   line: 'server.port: {kibana_port}'
     
 - name: Defining Elasticsearch URL
   lineinfile:
    destfile: /etc/kibana/kibana.yml
    regexp: 'elasticsearch.url:'
-   line: 'elasticsearch.url: "http://172.21.37.20:9200"'
+   line: 'elasticsearch.url: "http://{IP_Address:Port}"'
    
 # Starting Kibana
 
